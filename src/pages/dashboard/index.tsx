@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { Link } from "wouter";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 import { useAuth } from "@/contexts/AuthContext";
 import { apiGet, apiPost } from "@/lib/api";
 import { Button } from "@/components/ui/button";
@@ -253,8 +255,8 @@ export default function Dashboard() {
                     <span>{getModelLabel(lastTask.model)}</span>
                   </div>
                 </div>
-                <div className="text-sm text-foreground whitespace-pre-wrap bg-background rounded-lg p-4 border border-border font-mono leading-relaxed">
-                  {lastTask.response}
+                <div className="prose prose-sm dark:prose-invert max-w-none text-sm text-foreground bg-background rounded-lg p-4 border border-border leading-relaxed prose-p:my-2 prose-headings:mt-3 prose-headings:mb-2 prose-pre:bg-muted prose-pre:text-foreground prose-code:text-foreground prose-table:text-sm">
+                  <ReactMarkdown remarkPlugins={[remarkGfm]}>{lastTask.response}</ReactMarkdown>
                 </div>
               </>
             )}
