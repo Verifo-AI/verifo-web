@@ -27,6 +27,7 @@ import Storage from "@/pages/contributors/storage";
 import RewardsReputation from "@/pages/contributors/rewards-reputation";
 import ContributorRegister from "@/pages/contributors/register";
 import ContributorDashboard from "@/pages/contributors/dashboard";
+import InstallDocs from "@/pages/contributors/install-docs";
 import Guide from "@/pages/guide";
 
 import DeveloperApi from "@/pages/ecosystem/developer-api";
@@ -93,6 +94,7 @@ function AppRoutes() {
             <Route path="/contributors/rewards-reputation" component={RewardsReputation} />
             <Route path="/contributors/register" component={ContributorRegister} />
             <Route path="/contributors/dashboard" component={ContributorDashboard} />
+            <Route path="/contributors/install-docs" component={InstallDocs} />
             <Route path="/contributors/guide" component={() => <Redirect to="/guide" />} />
             <Route path="/guide" component={Guide} />
 

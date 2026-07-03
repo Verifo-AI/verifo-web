@@ -445,9 +445,11 @@ function PairNodeSection() {
           Download Verifo Node Client (.zip)
         </a>
       </Button>
-      <Button variant="outline" className="w-full gap-2" disabled>
-        <ExternalLink className="w-4 h-4" />
-        View installation docs
+      <Button variant="outline" className="w-full gap-2" asChild>
+        <Link href="/contributors/install-docs" target="_blank" rel="noopener noreferrer">
+          <ExternalLink className="w-4 h-4" />
+          View installation docs
+        </Link>
       </Button>
 
       <div className="mt-5 pt-5 border-t border-border">
