@@ -42,7 +42,7 @@ export default function ProofExplorer() {
 
         <h2>Deep Dive: Inspecting a Proof</h2>
         <p>
-          Clicking on any row opens the full Proof Inspector. Here you can see the raw JSON data that was submitted to the blockchain. You can view the compute node's Solana wallet address, verify the digital signatures manually, and follow the link directly to SolanaFM or Solscan to view the on-chain transaction.
+          Clicking on any row opens the full Proof Inspector. Here you can see the raw JSON data that was submitted to the blockchain. You can view the compute node's Solana wallet address, verify the digital signatures manually, and follow the link directly to OrbMarkets to view the on-chain transaction.
         </p>
 
         <h2>Sharing Proofs</h2>

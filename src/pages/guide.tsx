@@ -254,7 +254,7 @@ export default function Guide() {
               <p>
                 Every task appears in a chronological history with its type, timestamp, model, and proof
                 status. Opening a task shows the raw proof data, the contributor node's wallet address,
-                its digital signature, and a direct link to view the transaction on Solscan or SolanaFM.
+                its digital signature, and a direct link to view the transaction on OrbMarkets.
               </p>
               <p>
                 A public link can be generated for any task. In private mode, that link only exposes the

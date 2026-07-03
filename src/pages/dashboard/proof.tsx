@@ -227,7 +227,7 @@ export default function ProofDetail() {
                   <p className="text-sm text-foreground">{onChainProof.proof.memoText}</p>
                   {onChainProof.proof.status === "confirmed" && onChainProof.proof.txSignature ? (
                     <a
-                      href={`https://explorer.solana.com/tx/${onChainProof.proof.txSignature}`}
+                      href={`https://orbmarkets.io/tx/${onChainProof.proof.txSignature}`}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="inline-flex items-center gap-2 text-sm text-primary hover:underline font-medium"

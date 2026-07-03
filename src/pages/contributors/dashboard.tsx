@@ -392,7 +392,7 @@ function ProofFeedSection() {
                     <ProofStatusPill status={proof.status} />
                     {proof.status === "confirmed" && proof.txSignature && (
                       <a
-                        href={`https://explorer.solana.com/tx/${proof.txSignature}`}
+                        href={`https://orbmarkets.io/tx/${proof.txSignature}`}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="inline-flex items-center gap-1 text-[11px] text-primary hover:underline"
