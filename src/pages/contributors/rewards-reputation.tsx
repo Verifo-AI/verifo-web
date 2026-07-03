@@ -60,7 +60,7 @@ export default function RewardsReputation() {
           There are no manual withdrawals, no minimum payout thresholds, and no locked tokens. 
         </p>
         <p>
-          Rewards are accumulated as you complete tasks and are automatically disbursed in USDC directly to your connected Solana wallet in regular settlement batches (typically every hour). The transparency of the Solana blockchain means you can audit every single micro-payment your node receives.
+          The instant your node completes a task, the reward is paid on-chain in USDC directly to your connected Solana wallet, no batching, no waiting period. The transparency of the Solana blockchain means you can audit every single payment your node receives, task by task.
         </p>
       </ArticleLayout>
     </Layout>

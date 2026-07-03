@@ -78,7 +78,7 @@ export default function Compute() {
 
         <h2>Reward Structure</h2>
         <p>
-          Compute nodes operate on a pay-per-task model. You are compensated for the exact amount of compute time required, scaled by the complexity of the model you ran. Payouts are settled automatically to your connected Solana wallet in USDC.
+          Compute nodes operate on a pay-per-task model. You are compensated for the exact amount of compute time required, scaled by the complexity of the model you ran. Payouts are settled automatically and instantly, on-chain, to your connected Solana wallet in USDC the moment each task completes.
         </p>
 
         <div className="not-prose mt-8 p-5 rounded-xl border border-border bg-muted/30 flex flex-col sm:flex-row items-start sm:items-center gap-4">

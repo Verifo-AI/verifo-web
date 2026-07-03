@@ -77,19 +77,22 @@ export default function HowItWorks() {
           The selected contributor node receives the encrypted payload, runs the requested model inference (e.g., Llama 3, Stable Diffusion), and generates the response. The node cryptographically signs the output using its Solana wallet private key.
         </p>
 
-        <h3>4. Verification Consensus</h3>
+        <h3>4. Verification</h3>
         <p>
-          Before the response is returned to the user, the signed output is sent to a subset of Verification Nodes. These nodes independently validate:
+          Before the response is returned to the user, the signed output is checked against the original request. The network validates:
         </p>
         <ul>
           <li>The output hash matches the returned response.</li>
           <li>The digital signature maps correctly to the compute node's public key.</li>
           <li>The model metadata aligns with the original request.</li>
         </ul>
+        <p>
+          A dedicated network of independent Verification Nodes that reach committee consensus on every task is on the roadmap (see Protocol Roadmap, Phase 2) and not yet active, today this check is performed centrally before anchoring.
+        </p>
 
         <h3>5. On-Chain Anchoring</h3>
         <p>
-          Once consensus is reached, a cryptographic proof is generated. This proof (containing hashes, signatures, and timestamps, but not the raw prompt unless Public mode is used) is anchored to the Solana blockchain.
+          Once validation passes, a cryptographic proof is generated. This proof (containing hashes, signatures, and timestamps, but not the raw prompt unless Public mode is used) is anchored to the Solana blockchain.
         </p>
         <p>
           Finally, the response is decrypted and displayed to the user, complete with a permanent, verifiable proof link.

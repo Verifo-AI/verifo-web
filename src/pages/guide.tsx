@@ -610,7 +610,7 @@ export default function Guide() {
                 <p className="text-sm font-semibold">Automatic USDC payouts</p>
                 <p className="text-xs text-muted-foreground mt-1">
                   No manual withdrawals or minimum thresholds. Rewards settle directly to the connected
-                  wallet in regular batches.
+                  wallet on-chain, instantly, the moment each task completes.
                 </p>
               </div>
             </div>

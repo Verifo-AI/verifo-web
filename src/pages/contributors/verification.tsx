@@ -71,7 +71,7 @@ export default function Verification() {
           Verification tasks pay a fraction of a cent per task, significantly less than a compute task. However, because verification takes milliseconds rather than seconds, a single Verification Node can process thousands of tasks per hour.
         </p>
         <p>
-          This results in a highly consistent, predictable yield that requires very little electricity or hardware overhead. As long as your node maintains high uptime and accurately validates hashes, you will earn steady USDC rewards deposited directly to your Solana wallet.
+          This results in a highly consistent, predictable yield that requires very little electricity or hardware overhead. As long as your node maintains high uptime and accurately validates hashes, you will earn steady USDC rewards, paid instantly on-chain to your Solana wallet the moment each task is verified.
         </p>
 
         <div className="not-prose mt-8 p-5 rounded-xl border border-border bg-muted/30 flex flex-col sm:flex-row items-start sm:items-center gap-4">

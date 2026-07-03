@@ -310,8 +310,14 @@ function PayoutSection() {
     <div className="bg-card border border-border rounded-2xl p-6">
       <div className="flex items-center gap-2 mb-4">
         <Wallet className="w-4 h-4 text-primary" />
-        <h2 className="font-semibold">Real USDC Payout</h2>
+        <h2 className="font-semibold">Pending Balance</h2>
       </div>
+
+      <p className="text-xs text-muted-foreground mb-3">
+        Most task rewards are paid automatically, instantly, on-chain, right after each task completes, see
+        "Recent Tasks & Reward Payments" above. This balance only holds uptime-based rewards (Witness mode) and the
+        rare task reward that couldn't be broadcast automatically. Claim it manually below whenever you like.
+      </p>
 
       <div className="flex items-baseline gap-3 mb-1">
         <span className="text-2xl font-bold">${data.pendingRewardUsdc.toFixed(2)}</span>
@@ -453,8 +459,10 @@ function ProofFeedSection() {
         </div>
       </div>
       <p className="text-xs text-muted-foreground mb-5">
-        Every connect, disconnect, and task event is recorded as a real Solana mainnet transaction, co-signed by your
-        node's own key. The network fee is sponsored by Verifo, so you never spend your own SOL.
+        Every connect, disconnect, and task event is recorded as a real Solana mainnet transaction. Whenever your node
+        is reachable, it co-signs the proof with its own key; if it goes offline or reconnects without warning, Verifo
+        still records the event on-chain on your behalf so the history stays complete. The network fee is always
+        sponsored by Verifo, so you never spend your own SOL.
       </p>
 
       {proofs.length === 0 ? (

@@ -71,7 +71,7 @@ export default function Storage() {
           <li><strong>Retrieval Operations:</strong> A micro-reward is paid each time your node successfully serves a data shard back to the network.</li>
         </ol>
         <p>
-          While the per-unit reward is lower than running compute inference, storage yields are highly predictable and require essentially zero active management once configured. Rewards are accumulated and deposited to your connected Solana wallet in USDC.
+          While the per-unit reward is lower than running compute inference, storage yields are highly predictable and require essentially zero active management once configured. Rewards accrue continuously based on your node's verified uptime and are paid out in USDC to your connected Solana wallet.
         </p>
 
         <div className="not-prose mt-8 p-5 rounded-xl border border-border bg-muted/30 flex flex-col sm:flex-row items-start sm:items-center gap-4">
