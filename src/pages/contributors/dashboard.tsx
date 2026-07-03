@@ -486,7 +486,7 @@ function PairNodeSection() {
             <p className="text-[11px] text-muted-foreground">
               {minutesLeft !== null && minutesLeft > 0
                 ? `Expires in ~${minutesLeft} min. Run this from inside the unzipped verifo-node-client folder.`
-                : "This code has expired — generate a new one."}
+                : "This code has expired, generate a new one."}
             </p>
             <button
               type="button"
@@ -530,7 +530,7 @@ function BrowserModePausedNotice() {
     return (
       <div className="mb-6 bg-amber-50 dark:bg-amber-900/10 border border-amber-200 dark:border-amber-800 rounded-lg p-3 flex items-start gap-2 text-sm text-amber-800 dark:text-amber-300">
         <PauseCircle className="w-4 h-4 shrink-0 mt-0.5" />
-        <span>This tab isn't focused — Browser Mode contribution is paused. Keep this tab open and active to keep earning.</span>
+        <span>This tab isn't focused, Browser Mode contribution is paused. Keep this tab open and active to keep earning.</span>
       </div>
     );
   }

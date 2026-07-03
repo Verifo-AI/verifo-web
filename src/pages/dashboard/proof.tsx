@@ -188,7 +188,7 @@ export default function ProofDetail() {
                 </div>
                 <div>
                   <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-1.5">Completed</div>
-                  <div className="text-sm text-foreground">{task.completedAt ? new Date(task.completedAt).toLocaleString() : "—"}</div>
+                  <div className="text-sm text-foreground">{task.completedAt ? new Date(task.completedAt).toLocaleString() : "-"}</div>
                 </div>
                 <div>
                   <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-1.5">Model</div>

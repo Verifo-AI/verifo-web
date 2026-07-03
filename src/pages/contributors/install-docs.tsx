@@ -19,7 +19,7 @@ export default function InstallDocs() {
         <p>
           The Verifo Node client is a small program that runs on your own computer. It detects your machine's real
           CPU, RAM, and GPU, generates a local identity keypair, and proves your node is online by sending signed
-          heartbeats to the network — there is no simulated data involved.
+          heartbeats to the network, there is no simulated data involved.
         </p>
 
         <h2>Requirements</h2>
@@ -49,7 +49,7 @@ node bin/verifo-node.mjs link &lt;PAIRING_CODE&gt;</code></pre>
         <p>Once linked, start reporting with:</p>
         <pre><code>node bin/verifo-node.mjs start</code></pre>
         <p>
-          Leave this process running — it sends a signed heartbeat every 30 seconds. Your dashboard will only show
+          Leave this process running, it sends a signed heartbeat every 30 seconds. Your dashboard will only show
           your node as "online" while this process is actively running on your machine.
         </p>
 

@@ -21,8 +21,8 @@ import {
 } from "lucide-react";
 import { SiLinux, SiApple } from "react-icons/si";
 import { cn } from "@/lib/utils";
-import { useMutation } from "@tanstack/react-query";
-import { apiPost, ApiError } from "@/lib/api";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { apiPost, apiGet, ApiError } from "@/lib/api";
 import { linkBrowserNode } from "@/lib/browserNode";
 import { Globe, Terminal } from "lucide-react";
 
@@ -43,7 +43,7 @@ const CONTRIBUTION_MODE_INFO: Record<
   relay: {
     label: "Relay Node",
     icon: Radio,
-    description: "Your device forwards AI tasks to more powerful nodes and verifies delivery — it won't run inference itself.",
+    description: "Your device forwards AI tasks to more powerful nodes and verifies delivery, without running inference itself.",
     earnings: "Up to 3 USDC/day",
     tag: "Balanced",
     tagColor: "bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300",
@@ -58,7 +58,7 @@ const CONTRIBUTION_MODE_INFO: Record<
   },
 };
 
-// Mirrors the thresholds in artifacts/api-server/src/lib/contributionMode.ts —
+// Mirrors the thresholds in the API server's contributionMode module —
 // used only for an instant local preview while the /contributors/detect-mode
 // call is in flight. The server-side classification is always the one that
 // actually gets stored, so this can never be gamed from the client.
@@ -189,7 +189,7 @@ function Step1({
     <div>
       <h2 className="text-xl font-bold mb-2">We detected your device</h2>
       <p className="text-muted-foreground text-sm mb-6">
-        Verifo automatically classifies your contribution role from your actual browser-reported hardware —
+        Verifo automatically classifies your contribution role from your actual browser-reported hardware,
         no guessing your GPU model required.
       </p>
 
@@ -267,7 +267,7 @@ function Step2({
       <div>
         <h2 className="text-xl font-bold mb-2">How you'll contribute</h2>
         <p className="text-muted-foreground text-sm mb-6">
-          Phones can't run the Verifo node client, so you'll contribute in <strong>Browser Mode</strong> — no install
+          Phones can't run the Verifo node client, so you'll contribute in <strong>Browser Mode</strong>, no install
           needed.
         </p>
         <div className="p-5 rounded-xl border-2 border-primary bg-primary/5 flex gap-4 items-start mb-4">
@@ -277,7 +277,7 @@ function Step2({
           <div className="flex-1 min-w-0">
             <span className="font-semibold">Browser Mode</span>
             <p className="text-sm text-muted-foreground mt-1">
-              Runs entirely from this browser tab — nothing to download or install.
+              Runs entirely from this browser tab, nothing to download or install.
             </p>
           </div>
         </div>
@@ -285,7 +285,7 @@ function Step2({
           <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
           <span>
             Keep this tab open to keep earning. Closing the tab or locking your phone for a while pauses your
-            contribution — it resumes automatically as soon as you reopen it. Reward rate is lower than CLI Mode
+            contribution, it resumes automatically as soon as you reopen it. Reward rate is lower than CLI Mode
             because of this.
           </span>
         </div>
@@ -297,7 +297,7 @@ function Step2({
     <div>
       <h2 className="text-xl font-bold mb-2">How you'll contribute</h2>
       <p className="text-muted-foreground text-sm mb-6">
-        Choose how this device runs the Verifo node — you can change this later from the dashboard.
+        Choose how this device runs the Verifo node, you can change this later from the dashboard.
       </p>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6">
@@ -341,7 +341,7 @@ function Step2({
         <div className="flex gap-2 items-start text-xs text-amber-700 dark:text-amber-400 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg p-3 mb-6">
           <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
           <span>
-            Your hardware qualifies for Compute Node — the highest reward tier. Compute mode can only run through the
+            Your hardware qualifies for Compute Node, the highest reward tier. Compute mode can only run through the
             CLI client. Choosing Browser Mode here will register you as a Relay/Witness node instead, at the lower
             Browser Mode rate.
           </span>
@@ -418,7 +418,7 @@ function Step3({
       </div>
       <p className="text-xs text-muted-foreground mt-2">
         A valid Solana address is 32–44 characters. For testing, any non-empty value is accepted.
-        Pre-filled with your connected wallet — edit it if you'd like rewards sent elsewhere.
+        Pre-filled with your connected wallet, edit it if you'd like rewards sent elsewhere.
       </p>
     </div>
   );
@@ -505,6 +505,22 @@ export default function ContributorRegister() {
   const [profile, setProfile] = useState<DeviceProfile | null>(null);
   const [mode, setMode] = useState<ContributionMode>("relay");
   const [detectError, setDetectError] = useState(false);
+
+  // If this account already has a node, there's nothing to register — send
+  // them straight to their dashboard instead of showing the setup wizard
+  // again (which would just fail at the last step with a 409).
+  const existingNodeQuery = useQuery({
+    queryKey: ["contributor-node"],
+    queryFn: () => apiGet("/contributors/me"),
+    enabled: isSignedIn,
+    retry: false,
+  });
+
+  useEffect(() => {
+    if (existingNodeQuery.data) {
+      navigate("/contributors/dashboard");
+    }
+  }, [existingNodeQuery.data, navigate]);
 
   useEffect(() => {
     let cancelled = false;
