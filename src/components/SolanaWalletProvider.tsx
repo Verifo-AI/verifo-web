@@ -11,9 +11,10 @@ import "@solana/wallet-adapter-react-ui/styles.css";
 
 // Routed through our own backend so it goes through Helius (our primary
 // Solana RPC provider) without ever exposing the Helius API key in the
-// browser bundle.
+// browser bundle. Connection requires an absolute http(s) URL, so we
+// resolve the relative API base against the current origin.
 const API_BASE = import.meta.env.BASE_URL.replace(/\/$/, "").replace(/\/[^/]*$/, "");
-const RPC = `${API_BASE}/api/solana-rpc`;
+const RPC = new URL(`${API_BASE}/api/solana-rpc`, window.location.origin).toString();
 
 export function SolanaWalletProvider({ children }: { children: React.ReactNode }) {
   const wallets = useMemo(
