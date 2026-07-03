@@ -10,17 +10,9 @@ import { DashboardBottomNav } from "@/components/dashboard-bottom-nav";
 import { Shield, CheckCircle, Clock, AlertCircle, LogOut, Sun, Moon, History, Zap, Server, MessageSquare, Code, Image, Globe, ChevronRight, Coins } from "lucide-react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { cn } from "@/lib/utils";
+import { MODEL_OPTIONS, getModelLabel } from "@/lib/models";
 
-
-// Verifo's fallback inference always runs on Claude (via an internal AI proxy), so the model IDs shown here must be real Anthropic models
-// the backend actually accepts. A node running a local model can still be
-// used first (Fase 2 routing) — the model choice here just governs what the
-// fallback Claude call uses if no node is available/willing.
-const MODELS = [
-  { value: "claude-sonnet-4-6", label: "Claude Sonnet 4.6 (balanced)" },
-  { value: "claude-opus-4-8", label: "Claude Opus 4.8 (most capable)" },
-  { value: "claude-haiku-4-5", label: "Claude Haiku 4.5 (fastest)" },
-];
+const MODELS = MODEL_OPTIONS;
 
 const TASK_TYPES = [
   { value: "chat", label: "Chat", icon: MessageSquare },
@@ -258,7 +250,7 @@ export default function Dashboard() {
                   <div className="text-xs text-muted-foreground font-medium uppercase tracking-wider">Response</div>
                   <div className="flex items-center gap-1 text-[10px] text-muted-foreground">
                     <span>·</span>
-                    <span>{lastTask.model}</span>
+                    <span>{getModelLabel(lastTask.model)}</span>
                   </div>
                 </div>
                 <div className="text-sm text-foreground whitespace-pre-wrap bg-background rounded-lg p-4 border border-border font-mono leading-relaxed">

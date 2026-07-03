@@ -6,6 +6,7 @@ import { Shield, CheckCircle, XCircle, LogOut, Sun, Moon, Clock, History, Coins,
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { DashboardBottomNav } from "@/components/dashboard-bottom-nav";
+import { getModelLabel } from "@/lib/models";
 
 function CopyField({ label, value }: { label: string; value: string }) {
   const [copied, setCopied] = useState(false);
@@ -175,7 +176,7 @@ export default function ProofDetail() {
                 <div>
                   <h2 className="text-lg font-bold">{task.status === "completed" ? "Task Completed" : "Task " + task.status}</h2>
                   <p className="text-sm text-muted-foreground">
-                    {task.source === "local_model" ? "Answered by a contributor node's own model" : "Answered by central Claude fallback"}
+                    {task.source === "local_model" ? "Answered by a contributor node's own model" : "Answered by Verifo's central network"}
                   </p>
                 </div>
               </div>
@@ -191,11 +192,11 @@ export default function ProofDetail() {
                 </div>
                 <div>
                   <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-1.5">Model</div>
-                  <div className="text-sm text-foreground">{task.model}</div>
+                  <div className="text-sm text-foreground">{getModelLabel(task.model)}</div>
                 </div>
                 <div>
                   <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-1.5">Provenance</div>
-                  <div className="text-sm text-foreground">{task.source === "local_model" ? "Contributor node (local model)" : "Central Claude fallback"}</div>
+                  <div className="text-sm text-foreground">{task.source === "local_model" ? "Contributor node (local model)" : "Verifo central network"}</div>
                 </div>
               </div>
             </div>

@@ -7,6 +7,7 @@ import { Shield, CheckCircle, XCircle, Clock, LogOut, Sun, Moon, History, Chevro
 import { useQuery } from "@tanstack/react-query";
 import { cn } from "@/lib/utils";
 import { formatDistanceToNow } from "date-fns";
+import { getModelLabel } from "@/lib/models";
 
 
 const TASK_TYPE_ICONS: Record<string, React.FC<{ className?: string }>> = {
@@ -156,7 +157,7 @@ export default function TaskHistory() {
                           {task.type.replace("_", " ")}
                         </span>
                         <span className="text-xs text-muted-foreground">·</span>
-                        <span className="text-xs text-muted-foreground">{task.model.split("/").pop()}</span>
+                        <span className="text-xs text-muted-foreground">{getModelLabel(task.model)}</span>
                         {task.creditsUsed > 0 && (
                           <>
                             <span className="text-xs text-muted-foreground">·</span>

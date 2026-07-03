@@ -24,7 +24,7 @@ export default function AiCapabilities() {
           Conversational AI for writing, brainstorming, summarization, and deep reasoning tasks.
         </p>
         <ul>
-          <li><strong>Models:</strong> Llama 3 (8B, 70B), Mixtral 8x22B, Claude 3 (via managed nodes).</li>
+          <li><strong>Models:</strong> Llama 3 (8B, 70B), Mixtral 8x22B, and Verifo's own managed cloud models.</li>
           <li><strong>Typical Cost:</strong> 1 credit per interaction.</li>
           <li><strong>Response Time:</strong> 1-3 seconds.</li>
         </ul>
