@@ -28,7 +28,17 @@ export function SolanaWalletProvider({ children }: { children: React.ReactNode }
 
   return (
     <ConnectionProvider endpoint={RPC}>
-      <WalletProvider wallets={wallets} autoConnect>
+      <WalletProvider
+        wallets={wallets}
+        autoConnect
+        onError={(error) => {
+          // Wallet adapter errors (rejected connection, wallet not
+          // installed, disconnects, etc.) are expected user-driven events,
+          // not app bugs. Log them instead of letting them surface as
+          // unhandled rejections that could otherwise crash the page.
+          console.error("[wallet-adapter]", error.name, error.message, error);
+        }}
+      >
         <WalletModalProvider>
           {children}
         </WalletModalProvider>
