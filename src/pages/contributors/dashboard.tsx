@@ -196,6 +196,72 @@ function CopyableCommand({ command }: { command: string }) {
   );
 }
 
+type NodeTask = {
+  id: string;
+  type: string;
+  status: "completed" | "failed" | "running";
+  reward: string;
+  duration: string;
+  timestamp: string;
+  rewardPayoutStatus: "not_applicable" | "paid" | "failed";
+  rewardTxSignature: string | null;
+  rewardExplorerUrl: string | null;
+};
+
+function RecentTasksSection() {
+  const { data, isLoading } = useQuery<{ tasks: NodeTask[]; total: number }>({
+    queryKey: ["node-tasks"],
+    queryFn: () => apiGet("/nodes/tasks?limit=10"),
+    refetchInterval: EARNINGS_REFETCH_INTERVAL_MS,
+  });
+
+  return (
+    <div className="bg-card border border-border rounded-2xl p-6">
+      <div className="flex items-center gap-2 mb-4">
+        <Activity className="w-4 h-4 text-primary" />
+        <h2 className="font-semibold">Recent Tasks & Reward Payments</h2>
+      </div>
+
+      {isLoading ? (
+        <div className="h-16 flex items-center justify-center text-sm text-muted-foreground">Loading recent tasks…</div>
+      ) : !data || data.tasks.length === 0 ? (
+        <p className="text-sm text-muted-foreground">No tasks completed yet.</p>
+      ) : (
+        <div className="space-y-3">
+          {data.tasks.map((task) => (
+            <div key={task.id} className="border border-border rounded-xl p-4">
+              <div className="flex items-center justify-between gap-3 mb-1">
+                <span className="text-sm font-medium text-foreground">{task.type}</span>
+                <span className="text-sm font-semibold text-foreground">{task.reward}</span>
+              </div>
+              <div className="flex items-center justify-between gap-3 text-xs text-muted-foreground mb-2">
+                <span>
+                  {task.status} · {task.duration} · {task.timestamp}
+                </span>
+              </div>
+              {task.rewardPayoutStatus === "paid" && task.rewardTxSignature ? (
+                <a
+                  href={task.rewardExplorerUrl ?? `https://orbmarkets.io/tx/${task.rewardTxSignature}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 text-xs text-primary hover:underline font-medium"
+                >
+                  <ExternalLink className="w-3 h-3" />
+                  Reward paid on-chain, view transaction
+                </a>
+              ) : task.rewardPayoutStatus === "failed" ? (
+                <p className="text-xs text-amber-600 dark:text-amber-400">
+                  Instant on-chain payment failed for this task; the reward was added to your pending balance instead.
+                </p>
+              ) : null}
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 type PayoutInfo = {
   pendingRewardUsdc: number;
   totalPaidUsdc: number;
@@ -803,6 +869,10 @@ export default function ContributorDashboard() {
 
             <div className="mb-6">
               <PayoutSection />
+            </div>
+
+            <div className="mb-6">
+              <RecentTasksSection />
             </div>
 
             <div className="mb-6">

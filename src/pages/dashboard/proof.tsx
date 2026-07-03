@@ -59,6 +59,9 @@ type TaskDetail = {
   totalPaidUsdcMicros: number;
   treasuryUsdcMicros: number;
   contributorNode?: ContributorNodeInfo | null;
+  rewardPayoutStatus?: "not_applicable" | "paid" | "failed";
+  rewardTxSignature?: string | null;
+  rewardExplorerUrl?: string | null;
 };
 
 const CONTRIBUTION_MODE_LABEL: Record<string, string> = {
@@ -331,6 +334,36 @@ export default function ProofDetail() {
                 </div>
               )}
             </div>
+
+            {involvedNode && task.rewardPayoutStatus && task.rewardPayoutStatus !== "not_applicable" && (
+              <div className="bg-card border border-border rounded-2xl p-6 shadow-sm">
+                <div className="flex items-center gap-2 mb-4">
+                  <Coins className="w-4 h-4 text-primary" />
+                  <h3 className="font-semibold">Reward Payment</h3>
+                </div>
+                {task.rewardPayoutStatus === "paid" && task.rewardTxSignature ? (
+                  <div className="space-y-3">
+                    <p className="text-sm text-foreground">
+                      The contributor node was paid ${usdc(task.nodeRewardUsdcMicros)} USDC automatically on-chain the instant this task completed.
+                    </p>
+                    <CopyField label="Reward Payment Transaction Signature" value={task.rewardTxSignature} />
+                    <a
+                      href={task.rewardExplorerUrl ?? `https://orbmarkets.io/tx/${task.rewardTxSignature}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 text-sm text-primary hover:underline font-medium"
+                    >
+                      <ExternalLink className="w-4 h-4" />
+                      View reward payment on Solana Explorer
+                    </a>
+                  </div>
+                ) : (
+                  <p className="text-xs text-amber-600 dark:text-amber-400">
+                    The instant on-chain payment couldn't be broadcast for this task. The reward was credited to the node's balance instead and can still be claimed from its dashboard.
+                  </p>
+                )}
+              </div>
+            )}
 
             <div className="bg-[hsl(28_40%_9%)] border border-border/20 rounded-2xl p-6 font-mono text-sm shadow-xl overflow-x-auto">
               <div className="flex items-center gap-2 mb-4 pb-4 border-b border-white/10">
