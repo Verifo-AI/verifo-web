@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
+    <title>Decentralized AI Infrastructure on Solana</title>
+    <meta name="description" content="Community-powered AI. Cryptographically verified. The decentralized infrastructure protocol for the next generation of artificial intelligence, anchored on Solana." />
+    <meta name="robots" content="index, follow" />
+    <meta property="og:title" content="Verifo — Decentralized AI Infrastructure" />
+    <meta property="og:description" content="Every AI task cryptographically verified, every inference run by community-owned hardware anchored on Solana." />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="/logo.webp" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Verifo — Decentralized AI Infrastructure" />
+    <meta name="twitter:description" content="Every AI task cryptographically verified, every inference run by community-owned hardware anchored on Solana." />
+    <meta name="twitter:image" content="/logo.webp" />
+    <link rel="icon" type="image/png" sizes="512x512" href="/favicon-512.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png" />
+    <link rel="apple-touch-icon" sizes="192x192" href="/favicon-192.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+      (function() {
+        try {
+          var theme = localStorage.getItem('theme');
+          var systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+          if (theme === 'dark' || (!theme && systemDark)) {
+            document.documentElement.classList.add('dark');
+          } else {
+            document.documentElement.classList.remove('dark');
+          }
+        } catch (e) {}
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
