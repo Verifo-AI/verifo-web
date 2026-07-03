@@ -295,7 +295,7 @@ const PROOF_FEED_REFETCH_INTERVAL_MS = 10_000;
 type NodeProofEventRow = {
   id: number;
   taskId: string | null;
-  eventType: "connect" | "disconnect" | "task_assigned" | "task_completed";
+  eventType: "connect" | "disconnect" | "task_assigned" | "task_completed" | "node_offline";
   status: "pending_signature" | "submitted" | "confirmed" | "failed";
   memoText: string;
   txSignature: string | null;
@@ -304,12 +304,20 @@ type NodeProofEventRow = {
   confirmedAt: string | null;
 };
 
+// This must stay in sync with every ProofEventType the backend can emit
+// (see the API server's solanaProofs module). A missing key here
+// used to crash the entire dashboard, because the lookup below assumed it
+// would always find a match — one unlisted event type (e.g. the
+// automatically-generated "node_offline" proof) blanked the whole page.
 const PROOF_EVENT_CONFIG: Record<NodeProofEventRow["eventType"], { label: string; color: string }> = {
   connect: { label: "Connected", color: "text-green-600 bg-green-100 dark:bg-green-900/30 dark:text-green-300" },
   disconnect: { label: "Disconnected", color: "text-muted-foreground bg-muted" },
   task_assigned: { label: "Task Assigned", color: "text-blue-600 bg-blue-100 dark:bg-blue-900/30 dark:text-blue-300" },
   task_completed: { label: "Task Completed", color: "text-amber-600 bg-amber-100 dark:bg-amber-900/30 dark:text-amber-300" },
+  node_offline: { label: "Went Offline", color: "text-red-600 bg-red-100 dark:bg-red-900/30 dark:text-red-300" },
 };
+
+const FALLBACK_PROOF_EVENT_CONFIG = { label: "Unknown Event", color: "text-muted-foreground bg-muted" };
 
 function ProofStatusPill({ status }: { status: NodeProofEventRow["status"] }) {
   if (status === "confirmed") {
@@ -373,7 +381,7 @@ function ProofFeedSection() {
       ) : (
         <ul className="space-y-2">
           {proofs.map((proof, i) => {
-            const config = PROOF_EVENT_CONFIG[proof.eventType];
+            const config = PROOF_EVENT_CONFIG[proof.eventType] || FALLBACK_PROOF_EVENT_CONFIG;
             return (
               <li
                 key={proof.id}
