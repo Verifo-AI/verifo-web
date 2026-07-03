@@ -49,18 +49,18 @@ import {
 
 const EARNINGS_REFETCH_INTERVAL_MS = 30_000;
 
-type EarningsDay = { date: string; label: string; vrfEarned: number };
+type UsdcEarningsDay = { date: string; label: string; usdcEarned: number };
 
 function EarningsChart() {
   const todayStr = new Date().toISOString().split("T")[0]!;
 
   const { data, isFetching, dataUpdatedAt } = useQuery<{
-    days: EarningsDay[];
-    totalVrf: number;
+    days: UsdcEarningsDay[];
+    totalUsdc: number;
     periodDays: number;
   }>({
-    queryKey: ["node-earnings"],
-    queryFn: () => apiGet("/nodes/earnings?days=7"),
+    queryKey: ["node-usdc-earnings"],
+    queryFn: () => apiGet("/nodes/usdc-earnings?days=7"),
     refetchInterval: EARNINGS_REFETCH_INTERVAL_MS,
     staleTime: 0,
   });
@@ -70,74 +70,91 @@ function EarningsChart() {
     : null;
 
   const days = data?.days ?? [];
-  const totalVrf = data?.totalVrf ?? 0;
-  const todayVrf = days.find((d) => d.date === todayStr)?.vrfEarned ?? 0;
+  const totalUsdc = data?.totalUsdc ?? 0;
+  const todayUsdc = days.find((d) => d.date === todayStr)?.usdcEarned ?? 0;
 
   return (
-    <div className="bg-card border border-border rounded-2xl p-6">
-      <div className="flex items-center justify-between mb-1">
-        <div className="flex items-center gap-2">
-          <TrendingUp className="w-4 h-4 text-primary" />
-          <h2 className="font-semibold">Earnings: Last 7 Days</h2>
+    <div className="space-y-4">
+      <div className="bg-card border border-border rounded-2xl p-6">
+        <div className="flex items-center justify-between mb-1">
+          <div className="flex items-center gap-2">
+            <TrendingUp className="w-4 h-4 text-primary" />
+            <h2 className="font-semibold">Your Earnings: Last 7 Days</h2>
+          </div>
+          <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+            {isFetching && <RefreshCw className="w-3 h-3 animate-spin" />}
+            {lastUpdated && <span>Updated {lastUpdated}</span>}
+          </div>
         </div>
-        <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
-          {isFetching && <RefreshCw className="w-3 h-3 animate-spin" />}
-          {lastUpdated && <span>Updated {lastUpdated}</span>}
+
+        <div className="flex items-baseline gap-3 mb-5">
+          <span className="text-2xl font-bold">${todayUsdc.toFixed(4)}</span>
+          <span className="text-sm text-muted-foreground">today</span>
+          <span className="text-xs text-muted-foreground ml-auto">${totalUsdc.toFixed(4)} USDC total this week</span>
         </div>
+
+        {days.length > 0 ? (
+          <ResponsiveContainer width="100%" height={140}>
+            <BarChart data={days} margin={{ top: 4, right: 4, left: -24, bottom: 0 }} barCategoryGap="25%">
+              <XAxis
+                dataKey="label"
+                tick={{ fontSize: 11, fill: "hsl(var(--muted-foreground))" }}
+                axisLine={false}
+                tickLine={false}
+              />
+              <YAxis
+                tick={{ fontSize: 11, fill: "hsl(var(--muted-foreground))" }}
+                axisLine={false}
+                tickLine={false}
+                tickFormatter={(v: number) => v.toFixed(2)}
+              />
+              <Tooltip
+                formatter={(value: number) => [`$${value.toFixed(4)}`, "Earned"]}
+                labelStyle={{ fontSize: 12 }}
+                contentStyle={{
+                  fontSize: 12,
+                  border: "1px solid hsl(var(--border))",
+                  borderRadius: "0.5rem",
+                  background: "hsl(var(--card))",
+                  color: "hsl(var(--foreground))",
+                }}
+                cursor={{ fill: "hsl(var(--muted))", opacity: 0.5 }}
+              />
+              <Bar dataKey="usdcEarned" radius={[4, 4, 0, 0]}>
+                {days.map((d) => (
+                  <Cell
+                    key={d.date}
+                    fill={d.date === todayStr ? "hsl(var(--primary))" : "hsl(var(--primary) / 0.35)"}
+                  />
+                ))}
+              </Bar>
+            </BarChart>
+          </ResponsiveContainer>
+        ) : (
+          <div className="h-[140px] flex items-center justify-center text-sm text-muted-foreground">
+            Loading earnings data…
+          </div>
+        )}
+
+        <p className="text-[11px] text-muted-foreground mt-3 text-right">
+          Real USDC earned by your own node · auto-refreshes every 30 s
+        </p>
       </div>
 
-      <div className="flex items-baseline gap-3 mb-5">
-        <span className="text-2xl font-bold">{todayVrf.toFixed(2)} VRF</span>
-        <span className="text-sm text-muted-foreground">today</span>
-        <span className="text-xs text-muted-foreground ml-auto">{totalVrf.toFixed(2)} VRF total this week</span>
-      </div>
-
-      {days.length > 0 ? (
-        <ResponsiveContainer width="100%" height={140}>
-          <BarChart data={days} margin={{ top: 4, right: 4, left: -24, bottom: 0 }} barCategoryGap="25%">
-            <XAxis
-              dataKey="label"
-              tick={{ fontSize: 11, fill: "hsl(var(--muted-foreground))" }}
-              axisLine={false}
-              tickLine={false}
-            />
-            <YAxis
-              tick={{ fontSize: 11, fill: "hsl(var(--muted-foreground))" }}
-              axisLine={false}
-              tickLine={false}
-              tickFormatter={(v: number) => v.toFixed(1)}
-            />
-            <Tooltip
-              formatter={(value: number) => [`${value.toFixed(2)} VRF`, "Earned"]}
-              labelStyle={{ fontSize: 12 }}
-              contentStyle={{
-                fontSize: 12,
-                border: "1px solid hsl(var(--border))",
-                borderRadius: "0.5rem",
-                background: "hsl(var(--card))",
-                color: "hsl(var(--foreground))",
-              }}
-              cursor={{ fill: "hsl(var(--muted))", opacity: 0.5 }}
-            />
-            <Bar dataKey="vrfEarned" radius={[4, 4, 0, 0]}>
-              {days.map((d) => (
-                <Cell
-                  key={d.date}
-                  fill={d.date === todayStr ? "hsl(var(--primary))" : "hsl(var(--primary) / 0.35)"}
-                />
-              ))}
-            </Bar>
-          </BarChart>
-        </ResponsiveContainer>
-      ) : (
-        <div className="h-[140px] flex items-center justify-center text-sm text-muted-foreground">
-          Loading earnings data…
+      <div className="bg-muted/30 border border-dashed border-border rounded-2xl p-5 opacity-70">
+        <div className="flex items-center justify-between mb-1">
+          <div className="flex items-center gap-2">
+            <Award className="w-4 h-4 text-muted-foreground" />
+            <h2 className="font-semibold text-muted-foreground">VRF Rewards</h2>
+          </div>
+          <span className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground bg-muted px-2 py-0.5 rounded-full border border-border">
+            Coming Soon
+          </span>
         </div>
-      )}
-
-      <p className="text-[11px] text-muted-foreground mt-3 text-right">
-        Auto-refreshes every 30 s · today's bar highlighted
-      </p>
+        <p className="text-xs text-muted-foreground mt-2">
+          A supplemental VRF token reward is planned for the future. USDC is the only active reward paid out today.
+        </p>
+      </div>
     </div>
   );
 }

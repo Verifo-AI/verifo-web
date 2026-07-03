@@ -32,6 +32,16 @@ function usdc(micros: number): string {
   return (micros / 1_000_000).toFixed(6);
 }
 
+type ContributorNodeInfo = {
+  nodeId: string;
+  contributionMode: string | null;
+  clientType: string;
+  isPlatformNode: boolean;
+  walletAddress: string;
+  os: string | null;
+  hardwareSummary: string | null;
+};
+
 type TaskDetail = {
   id: string;
   taskId: string;
@@ -48,6 +58,13 @@ type TaskDetail = {
   nodeRewardUsdcMicros: number;
   totalPaidUsdcMicros: number;
   treasuryUsdcMicros: number;
+  contributorNode?: ContributorNodeInfo | null;
+};
+
+const CONTRIBUTION_MODE_LABEL: Record<string, string> = {
+  compute: "Compute Node",
+  relay: "Relay Node",
+  witness: "Witness Node",
 };
 
 type TaskProof = {
@@ -200,6 +217,40 @@ export default function ProofDetail() {
                 </div>
               </div>
             </div>
+
+            {involvedNode && task.contributorNode && (
+              <div className="bg-card border border-border rounded-2xl p-6 shadow-sm">
+                <div className="flex items-center gap-2 mb-4">
+                  <Server className="w-4 h-4 text-primary" />
+                  <h3 className="font-semibold">Contributor / Device</h3>
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-1.5">Node</div>
+                    <div className="text-sm font-mono text-foreground">{task.contributorNode.nodeId}</div>
+                  </div>
+                  <div>
+                    <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-1.5">Type</div>
+                    <div className="text-sm text-foreground">
+                      {task.contributorNode.isPlatformNode
+                        ? "Platform relay node"
+                        : (task.contributorNode.contributionMode && CONTRIBUTION_MODE_LABEL[task.contributorNode.contributionMode]) ?? "Community contributor"}
+                      {!task.contributorNode.isPlatformNode && task.contributorNode.clientType === "browser" && " (Browser Mode)"}
+                    </div>
+                  </div>
+                  <div>
+                    <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-1.5">Device</div>
+                    <div className="text-sm text-foreground">
+                      {[task.contributorNode.os, task.contributorNode.hardwareSummary].filter(Boolean).join(" · ") || "Not reported"}
+                    </div>
+                  </div>
+                  <div>
+                    <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-1.5">Reward Wallet</div>
+                    <div className="text-sm font-mono text-foreground">{task.contributorNode.walletAddress}</div>
+                  </div>
+                </div>
+              </div>
+            )}
 
             <div className="bg-card border border-border rounded-2xl p-6 shadow-sm">
               <div className="flex items-center gap-2 mb-4">
