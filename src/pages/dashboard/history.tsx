@@ -32,6 +32,7 @@ type Task = {
   status: string;
   creditsUsed: number;
   createdAt: string;
+  response?: string;
 };
 
 export default function TaskHistory() {
@@ -169,6 +170,13 @@ export default function TaskHistory() {
                       <p className="text-xs text-muted-foreground mt-1">
                         {formatDistanceToNow(new Date(task.createdAt), { addSuffix: true })}
                       </p>
+                      {task.type === "image_generation" && task.response && (
+                        <img
+                          src={task.response}
+                          alt={task.prompt}
+                          className="mt-3 h-24 w-24 rounded-lg border border-border object-cover"
+                        />
+                      )}
                     </div>
                     {task.taskId && (
                       <Link

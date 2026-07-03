@@ -252,12 +252,18 @@ export default function Dashboard() {
                   <div className="text-xs text-muted-foreground font-medium uppercase tracking-wider">Response</div>
                   <div className="flex items-center gap-1 text-[10px] text-muted-foreground">
                     <span>·</span>
-                    <span>{getModelLabel(lastTask.model)}</span>
+                    <span>{lastTask.type === "image_generation" ? "gpt-image-1" : getModelLabel(lastTask.model)}</span>
                   </div>
                 </div>
-                <div className="prose prose-sm dark:prose-invert max-w-none text-sm text-foreground bg-background rounded-lg p-4 border border-border leading-relaxed prose-p:my-2 prose-headings:mt-3 prose-headings:mb-2 prose-pre:bg-muted prose-pre:text-foreground prose-code:text-foreground prose-table:text-sm">
-                  <ReactMarkdown remarkPlugins={[remarkGfm]}>{lastTask.response}</ReactMarkdown>
-                </div>
+                {lastTask.type === "image_generation" ? (
+                  <div className="rounded-lg border border-border overflow-hidden bg-background">
+                    <img src={lastTask.response} alt={lastTask.prompt} className="w-full h-auto" />
+                  </div>
+                ) : (
+                  <div className="prose prose-sm dark:prose-invert max-w-none text-sm text-foreground bg-background rounded-lg p-4 border border-border leading-relaxed prose-p:my-2 prose-headings:mt-3 prose-headings:mb-2 prose-pre:bg-muted prose-pre:text-foreground prose-code:text-foreground prose-table:text-sm">
+                    <ReactMarkdown remarkPlugins={[remarkGfm]}>{lastTask.response}</ReactMarkdown>
+                  </div>
+                )}
               </>
             )}
           </div>
