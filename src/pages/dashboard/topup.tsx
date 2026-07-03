@@ -24,11 +24,14 @@ import {
 import { cn } from "@/lib/utils";
 
 
+// Credit counts here are 100x the old amounts (1 credit is now $0.0001
+// instead of $0.01, see CREDIT_USDC_MICROS in api-server/routes/tasks.ts).
+// USDC prices are unchanged; only the credits granted per dollar went up.
 const PACKAGES = [
-  { id: "pack_100", usdcAmount: 1, credits: 100, label: "Starter", popular: false },
-  { id: "pack_500", usdcAmount: 4, credits: 500, label: "Pro", popular: true },
-  { id: "pack_2000", usdcAmount: 14, credits: 2000, label: "Builder", popular: false },
-  { id: "pack_10000", usdcAmount: 60, credits: 10000, label: "Enterprise", popular: false },
+  { id: "pack_100", usdcAmount: 1, credits: 10_000, label: "Starter", popular: false },
+  { id: "pack_500", usdcAmount: 4, credits: 50_000, label: "Pro", popular: true },
+  { id: "pack_2000", usdcAmount: 14, credits: 200_000, label: "Builder", popular: false },
+  { id: "pack_10000", usdcAmount: 60, credits: 1_000_000, label: "Enterprise", popular: false },
 ];
 
 type TopUpState =
@@ -175,7 +178,7 @@ export default function TopUpPage() {
       <main className="flex-1 max-w-3xl mx-auto w-full px-4 py-10">
         <div className="mb-8">
           <h1 className="text-2xl font-bold mb-1">Top Up Credits</h1>
-          <p className="text-muted-foreground text-sm">Connect your Solana wallet and deposit USDC to add credits. 1 credit ≈ $0.01 USDC. VRF token payments coming soon.</p>
+          <p className="text-muted-foreground text-sm">Connect your Solana wallet and deposit USDC to add credits. 1 credit ≈ $0.0001 USDC. VRF token payments coming soon.</p>
         </div>
 
         {state.step === "success" ? (
