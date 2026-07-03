@@ -31,6 +31,7 @@ const TASK_TYPES = [
 
 type Task = {
   id: string;
+  taskId: string;
   prompt: string;
   model: string;
   type: string;
@@ -38,7 +39,6 @@ type Task = {
   creditsUsed: number;
   response?: string;
   createdAt: string;
-  proofId?: string;
 };
 
 export default function Dashboard() {
@@ -237,9 +237,9 @@ export default function Dashboard() {
                 )}
                 <span className="text-xs text-muted-foreground">{lastTask.creditsUsed} credits used</span>
               </div>
-              {lastTask.proofId && (
+              {lastTask.taskId && (
                 <Link
-                  href={`/dashboard/proofs/${lastTask.proofId}`}
+                  href={`/dashboard/proofs/${lastTask.taskId}`}
                   className="flex items-center gap-1 text-xs text-primary hover:underline"
                 >
                   <Shield className="w-3.5 h-3.5" />

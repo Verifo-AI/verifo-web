@@ -71,7 +71,7 @@ function AppRoutes() {
 
             <Route path="/dashboard" component={() => <AuthRequired><Dashboard /></AuthRequired>} />
             <Route path="/dashboard/history" component={() => <AuthRequired><TaskHistory /></AuthRequired>} />
-            <Route path="/dashboard/proofs/:proofId" component={() => <AuthRequired><ProofDetail /></AuthRequired>} />
+            <Route path="/dashboard/proofs/:taskId" component={() => <AuthRequired><ProofDetail /></AuthRequired>} />
             <Route path="/dashboard/topup" component={() => <AuthRequired><TopUp /></AuthRequired>} />
 
             <Route path="/platform" component={() => <Redirect to="/platform/how-it-works" />} />

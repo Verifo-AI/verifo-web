@@ -24,13 +24,13 @@ const STATUS_CONFIG = {
 
 type Task = {
   id: string;
+  taskId: string;
   prompt: string;
   model: string;
   type: string;
   status: string;
   creditsUsed: number;
   createdAt: string;
-  proofId?: string | null;
 };
 
 export default function TaskHistory() {
@@ -169,9 +169,9 @@ export default function TaskHistory() {
                         {formatDistanceToNow(new Date(task.createdAt), { addSuffix: true })}
                       </p>
                     </div>
-                    {task.proofId && (
+                    {task.taskId && (
                       <Link
-                        href={`/dashboard/proofs/${task.proofId}`}
+                        href={`/dashboard/proofs/${task.taskId}`}
                         className="flex items-center gap-1 text-xs text-primary hover:underline shrink-0 opacity-0 group-hover:opacity-100 transition-opacity"
                       >
                         <Shield className="w-3.5 h-3.5" />
