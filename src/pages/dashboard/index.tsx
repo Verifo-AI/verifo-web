@@ -12,11 +12,14 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { cn } from "@/lib/utils";
 
 
+// Verifo's fallback inference always runs on Claude (via an internal AI proxy), so the model IDs shown here must be real Anthropic models
+// the backend actually accepts. A node running a local model can still be
+// used first (Fase 2 routing) — the model choice here just governs what the
+// fallback Claude call uses if no node is available/willing.
 const MODELS = [
-  { value: "meta-llama/Llama-3-70b-instruct", label: "Llama 3 70B" },
-  { value: "meta-llama/Llama-3-8b-instruct", label: "Llama 3 8B" },
-  { value: "mistralai/Mistral-7B-Instruct", label: "Mistral 7B" },
-  { value: "stable-diffusion-xl", label: "Stable Diffusion XL" },
+  { value: "claude-sonnet-4-6", label: "Claude Sonnet 4.6 (balanced)" },
+  { value: "claude-opus-4-8", label: "Claude Opus 4.8 (most capable)" },
+  { value: "claude-haiku-4-5", label: "Claude Haiku 4.5 (fastest)" },
 ];
 
 const TASK_TYPES = [
@@ -42,7 +45,7 @@ export default function Dashboard() {
   const { user, signOut } = useAuth();
   const { theme, setTheme } = useTheme();
   const [prompt, setPrompt] = useState("");
-  const [model, setModel] = useState("meta-llama/Llama-3-70b-instruct");
+  const [model, setModel] = useState("claude-sonnet-4-6");
   const [taskType, setTaskType] = useState("chat");
   const [lastTask, setLastTask] = useState<Task | null>(null);
   const qc = useQueryClient();
