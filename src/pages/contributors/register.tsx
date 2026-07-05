@@ -58,7 +58,7 @@ const CONTRIBUTION_MODE_INFO: Record<
   },
 };
 
-// Mirrors the thresholds in the API server's contributionMode module —
+// Mirrors the thresholds in artifacts/api-server/src/lib/contributionMode.ts —
 // used only for an instant local preview while the /contributors/detect-mode
 // call is in flight. The server-side classification is always the one that
 // actually gets stored, so this can never be gamed from the client.
@@ -268,7 +268,7 @@ function Step2({
         <h2 className="text-xl font-bold mb-2">How you'll contribute</h2>
         <p className="text-muted-foreground text-sm mb-6">
           Phones can't run the Verifo node client, so you'll contribute in <strong>Browser Mode</strong>, no install
-          needed.
+          needed. A dedicated Verifo Mobile app for a more stable relay experience is coming soon.
         </p>
         <div className="p-5 rounded-xl border-2 border-primary bg-primary/5 flex gap-4 items-start mb-4">
           <div className="p-2.5 rounded-lg shrink-0 bg-primary text-primary-foreground">

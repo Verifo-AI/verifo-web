@@ -11,6 +11,7 @@ export default function RewardsReputation() {
         categoryLink="/contributors/compute"
         relatedLinks={[
           { title: "Compute Nodes", href: "/contributors/compute" },
+          { title: "Relay Nodes", href: "/contributors/relay" },
           { title: "Verification Nodes", href: "/contributors/verification" },
           { title: "Storage Nodes", href: "/contributors/storage" },
         ]}
@@ -21,7 +22,7 @@ export default function RewardsReputation() {
 
         <h2>The Trust Score</h2>
         <p>
-          Every node (Compute, Verification, or Storage) maintains a public Trust Score, calculated dynamically based on four primary metrics:
+          Every node (Compute, Relay, Witness, Verification, or Storage) maintains a public Trust Score, calculated dynamically based on four primary metrics:
         </p>
 
         <h3>1. Uptime</h3>

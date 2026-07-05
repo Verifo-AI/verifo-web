@@ -2,7 +2,7 @@ import { Link } from "wouter";
 import { Layout } from "@/components/layout";
 import { ArticleLayout } from "@/components/article-layout";
 import { Button } from "@/components/ui/button";
-import { Cpu } from "lucide-react";
+import { Cpu, ArrowRight } from "lucide-react";
 
 export default function Compute() {
   return (
@@ -14,6 +14,7 @@ export default function Compute() {
         categoryLink="/contributors/compute"
         relatedLinks={[
           { title: "Become a Contributor", href: "/contributors/register" },
+          { title: "Relay Nodes", href: "/contributors/relay" },
           { title: "Verification Nodes", href: "/contributors/verification" },
           { title: "Storage Nodes", href: "/contributors/storage" },
           { title: "Rewards & Reputation", href: "/contributors/rewards-reputation" },
@@ -84,7 +85,9 @@ export default function Compute() {
         <div className="not-prose mt-8 p-5 rounded-xl border border-border bg-muted/30 flex flex-col sm:flex-row items-start sm:items-center gap-4">
           <p className="text-sm text-muted-foreground flex-1">Your hardware meets the requirements? Get started in 3 minutes.</p>
           <Button asChild variant="outline" className="shrink-0">
-            <Link href="/contributors/register">Register Node →</Link>
+            <Link href="/contributors/register" className="inline-flex items-center gap-1.5">
+              Register Node <ArrowRight className="w-4 h-4" />
+            </Link>
           </Button>
         </div>
       </ArticleLayout>

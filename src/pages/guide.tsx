@@ -434,7 +434,8 @@ export default function Guide() {
                 <p className="font-semibold text-sm mb-1">On mobile</p>
                 <p className="text-xs text-muted-foreground leading-relaxed">
                   No choice is shown. The wizard auto-selects Browser Mode, since a phone cannot run the
-                  desktop node client. A notice explains that the tab needs to stay open.
+                  desktop node client. A notice explains that the tab needs to stay open. A dedicated
+                  Verifo Mobile app for a more stable relay experience is coming soon.
                 </p>
               </div>
               <div className="p-5 rounded-xl border border-border bg-card">

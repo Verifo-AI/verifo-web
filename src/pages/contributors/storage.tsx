@@ -2,7 +2,7 @@ import { Link } from "wouter";
 import { Layout } from "@/components/layout";
 import { ArticleLayout } from "@/components/article-layout";
 import { Button } from "@/components/ui/button";
-import { HardDrive } from "lucide-react";
+import { HardDrive, ArrowRight } from "lucide-react";
 
 export default function Storage() {
   return (
@@ -15,6 +15,7 @@ export default function Storage() {
         relatedLinks={[
           { title: "Become a Contributor", href: "/contributors/register" },
           { title: "Compute Nodes", href: "/contributors/compute" },
+          { title: "Relay Nodes", href: "/contributors/relay" },
           { title: "Verification Nodes", href: "/contributors/verification" },
           { title: "Rewards & Reputation", href: "/contributors/rewards-reputation" },
         ]}
@@ -77,7 +78,9 @@ export default function Storage() {
         <div className="not-prose mt-8 p-5 rounded-xl border border-border bg-muted/30 flex flex-col sm:flex-row items-start sm:items-center gap-4">
           <p className="text-sm text-muted-foreground flex-1">Have spare disk space? Start earning passively in minutes.</p>
           <Button asChild variant="outline" className="shrink-0">
-            <Link href="/contributors/register">Register Node →</Link>
+            <Link href="/contributors/register" className="inline-flex items-center gap-1.5">
+              Register Node <ArrowRight className="w-4 h-4" />
+            </Link>
           </Button>
         </div>
       </ArticleLayout>

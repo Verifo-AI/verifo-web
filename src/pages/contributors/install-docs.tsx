@@ -11,6 +11,7 @@ export default function InstallDocs() {
         categoryLink="/contributors/compute"
         relatedLinks={[
           { title: "Compute Contribution", href: "/contributors/compute" },
+          { title: "Relay Nodes", href: "/contributors/relay" },
           { title: "Verification", href: "/contributors/verification" },
           { title: "Rewards & Reputation", href: "/contributors/rewards-reputation" },
           { title: "Contributor Dashboard", href: "/contributors/dashboard" },
@@ -58,6 +59,14 @@ node bin/verifo-node.mjs link &lt;PAIRING_CODE&gt;</code></pre>
           Depending on your machine's real hardware, your node is automatically classified into a contribution mode
           (witness, relay, or compute). Verified, online nodes are eligible to receive AI tasks and earn USDC
           rewards, and every completion is co-signed on-chain as real proof of activity.
+        </p>
+
+        <h2>Contributing from a Phone</h2>
+        <p>
+          Phones can't run this Node.js CLI client, they contribute through Browser Mode instead, no install
+          required. See <a href="/contributors/relay">Running a Relay Node</a> for details. A dedicated Verifo
+          Mobile app for a more stable, background-friendly relay experience is coming soon to the App Store and
+          Google Play.
         </p>
       </ArticleLayout>
     </Layout>
