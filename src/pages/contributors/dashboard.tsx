@@ -394,7 +394,7 @@ type NodeProofEventRow = {
 };
 
 // This must stay in sync with every ProofEventType the backend can emit
-// (see the API server's solanaProofs module). A missing key here
+// (see artifacts/api-server/src/lib/solanaProofs.ts). A missing key here
 // used to crash the entire dashboard, because the lookup below assumed it
 // would always find a match — one unlisted event type (e.g. the
 // automatically-generated "node_offline" proof) blanked the whole page.
@@ -550,6 +550,13 @@ function PairNodeSection() {
           View installation docs
         </Link>
       </Button>
+      <Button variant="outline" className="w-full gap-2 mt-3" disabled>
+        <Download className="w-4 h-4" />
+        Verifo Mobile App: Coming Soon
+      </Button>
+      <p className="text-xs text-muted-foreground mt-2">
+        On a phone today? Use <Link href="/contributors/relay" className="underline hover:text-primary">Browser Mode as a Relay Node</Link>, no install needed.
+      </p>
 
       <div className="mt-5 pt-5 border-t border-border">
         <h3 className="text-sm font-semibold mb-2 flex items-center gap-1.5">
