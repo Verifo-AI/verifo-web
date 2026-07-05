@@ -266,8 +266,8 @@ export default function ProofDetail() {
                     <Coins className="w-3.5 h-3.5" />
                     You Paid
                   </div>
-                  <div className="text-lg font-bold text-foreground">${usdc(task.totalPaidUsdcMicros)}</div>
-                  <div className="text-xs text-muted-foreground">USDC</div>
+                  <div className="text-lg font-bold text-foreground">{task.creditsUsed}</div>
+                  <div className="text-xs text-muted-foreground">Credits</div>
                 </div>
                 <div className="bg-muted/50 rounded-lg p-4 border border-border">
                   <div className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-1.5">

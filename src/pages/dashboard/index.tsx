@@ -252,7 +252,7 @@ export default function Dashboard() {
                   <div className="text-xs text-muted-foreground font-medium uppercase tracking-wider">Response</div>
                   <div className="flex items-center gap-1 text-[10px] text-muted-foreground">
                     <span>·</span>
-                    <span>{lastTask.type === "image_generation" ? "gpt-image-1" : getModelLabel(lastTask.model)}</span>
+                    <span>{lastTask.type === "image_generation" ? "Verifo Image Generation" : getModelLabel(lastTask.model)}</span>
                   </div>
                 </div>
                 {lastTask.type === "image_generation" ? (
