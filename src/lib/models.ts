@@ -1,4 +1,5 @@
-// Verifo's fallback inference runs on Claude behind the scenes (via an internal AI proxy), but that's an internal implementation detail — the UI
+// Verifo's fallback inference runs on Claude behind the scenes (via a hosted
+// AI provider proxy), but that's an internal implementation detail — the UI
 // should only ever show Verifo-branded model names to end users. The
 // `value` sent to the backend must stay a real Anthropic model ID since
 // that's what the /tasks endpoint actually accepts; only the user-facing
