@@ -1,4 +1,5 @@
-import { Switch, Route, Router as WouterRouter, Redirect } from "wouter";
+import { useEffect } from "react";
+import { Switch, Route, Router as WouterRouter, Redirect, useLocation } from "wouter";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -22,6 +23,7 @@ import ProofExplorer from "@/pages/users/proof-explorer";
 import Pricing from "@/pages/users/pricing";
 
 import Compute from "@/pages/contributors/compute";
+import Relay from "@/pages/contributors/relay";
 import Verification from "@/pages/contributors/verification";
 import Storage from "@/pages/contributors/storage";
 import RewardsReputation from "@/pages/contributors/rewards-reputation";
@@ -59,12 +61,26 @@ function AuthRequired({ children }: { children: React.ReactNode }) {
   return <>{children}</>;
 }
 
+function ScrollToTop() {
+  const [location] = useLocation();
+  useEffect(() => {
+    // Jump to the top instantly on every route change — no smooth-scroll
+    // animation. Without this, wouter (like most SPA routers) leaves the
+    // scroll position wherever it was on the previous page, which looks
+    // broken when a CTA/link takes you to a brand-new page that should
+    // start at the top.
+    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+  }, [location]);
+  return null;
+}
+
 function AppRoutes() {
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider defaultTheme="auto" storageKey="theme">
         <TooltipProvider>
           <BrowserNodeProvider>
+          <ScrollToTop />
           <Switch>
             <Route path="/" component={HomeRedirect} />
             <Route path="/sign-in" component={SignInPage} />
@@ -89,6 +105,7 @@ function AppRoutes() {
 
             <Route path="/contributors" component={() => <Redirect to="/contributors/compute" />} />
             <Route path="/contributors/compute" component={Compute} />
+            <Route path="/contributors/relay" component={Relay} />
             <Route path="/contributors/verification" component={Verification} />
             <Route path="/contributors/storage" component={Storage} />
             <Route path="/contributors/rewards-reputation" component={RewardsReputation} />

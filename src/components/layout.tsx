@@ -1,6 +1,6 @@
 import { Link } from "wouter";
 import { useTheme } from "./theme-provider";
-import { Moon, Sun, Clock, Menu, X, ChevronDown, Zap, Shield, Eye, Lock, Cpu, Server, HardDrive, Award, Code, Map as MapIcon, Users, Info, Settings, History, CreditCard, Rocket, BoxSelect, CpuIcon, LayoutDashboard, UserPlus, Github } from "lucide-react";
+import { Moon, Sun, Clock, Menu, X, ChevronDown, Zap, Shield, Eye, Lock, Cpu, Server, HardDrive, Award, Code, Map as MapIcon, Users, Info, Settings, History, CreditCard, Rocket, BoxSelect, CpuIcon, LayoutDashboard, UserPlus, Github, Radio } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
@@ -31,6 +31,7 @@ const MENU_ITEMS = [
     items: [
       { title: "Become a Contributor", href: "/contributors/register", description: "Register your node and start earning", icon: UserPlus },
       { title: "Compute Nodes", href: "/contributors/compute", description: "Run AI inference & earn rewards", icon: Server },
+      { title: "Relay Nodes", href: "/contributors/relay", description: "Forward tasks from a phone or laptop", icon: Radio },
       { title: "Verification Nodes", href: "/contributors/verification", description: "Validate tasks & generate proofs", icon: Shield },
       { title: "Storage Nodes", href: "/contributors/storage", description: "Store encrypted AI artifacts", icon: HardDrive },
       { title: "Rewards & Reputation", href: "/contributors/rewards-reputation", description: "How earnings and reputation work", icon: Award },
@@ -202,7 +203,7 @@ export function Layout({ children, hideNavOnTop = false }: { children: React.Rea
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
-            className="lg:hidden border-b border-border bg-background overflow-hidden"
+            className="lg:hidden fixed top-16 inset-x-0 z-40 border-b border-border bg-background overflow-hidden max-h-[calc(100vh-4rem)] overflow-y-auto"
           >
             <div className="px-6 py-4 space-y-1">
               {MENU_ITEMS.map((menu) => {
