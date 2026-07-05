@@ -24,7 +24,7 @@ export default function Security() {
 
         <h2>Cryptographic Signatures</h2>
         <p>
-          Identity in the Verifo network is entirely wallet-based. There are no usernames, passwords, or centralized API tokens for nodes. Every compute node, verification node, and storage node is identified by a Solana wallet public key.
+          Identity in the Verifo network is entirely wallet-based. There are no usernames, passwords, or centralized API tokens for nodes. Every compute node, relay node, witness node, verification node, and storage node is identified by a Solana wallet public key.
         </p>
         <p>
           When a compute node finishes generating an AI response, it must sign the output hash using its private key before returning it to the router. This creates a permanent, undeniable mathematical link between the hardware provider and the specific output they generated. A node cannot deny having produced a specific output, nor can a user forge an output and claim a specific node produced it.

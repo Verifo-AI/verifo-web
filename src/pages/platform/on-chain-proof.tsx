@@ -46,9 +46,9 @@ export default function OnChainProof() {
           <li><strong>Prompt Hash:</strong> A SHA-256 hash of the user's input. The hash acts as a fingerprint; anyone with the original prompt can verify it matches this hash, but the prompt itself cannot be reverse-engineered from the hash.</li>
           <li><strong>Output Hash:</strong> A SHA-256 hash of the AI's response.</li>
           <li><strong>Model Identifier:</strong> The exact model architecture and version that was executed.</li>
-          <li><strong>Node Signature:</strong> A cryptographic signature from the compute node, proving that this specific hardware provider generated the output.</li>
+          <li><strong>Node Signature:</strong> A cryptographic signature from the assigned node, proving that this specific hardware provider generated the output (for a Compute Node) or forwarded and confirmed it (for a Relay Node).</li>
           <li><strong>Timestamp:</strong> The exact Unix timestamp of task completion.</li>
-          <li><strong>Wallet:</strong> The Solana wallet address of the contributor node that ran the task.</li>
+          <li><strong>Wallet:</strong> The Solana wallet address of the contributor node that ran the task, whichever tier it belongs to.</li>
           <li><strong>Transaction ID:</strong> The Solana blockchain transaction hash where this proof was permanently anchored.</li>
         </ul>
 

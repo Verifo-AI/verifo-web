@@ -64,7 +64,7 @@ export default function HowItWorks() {
 
         <h3>2. Intelligent Routing</h3>
         <p>
-          The Verifo Router receives the request and analyzes the network state. It selects the best available compute node based on three factors:
+          The Verifo Router receives the request and analyzes the network state. Requests are matched to the appropriate contribution tier, Compute Nodes run inference directly, while lighter devices such as phones and modest laptops act as Relay Nodes, forwarding tasks to a Compute Node and confirming delivery. Within the selected tier, the router picks the best available node based on three factors:
         </p>
         <ul>
           <li><strong>Hardware capabilities:</strong> Does the node have the VRAM required for the requested model?</li>
