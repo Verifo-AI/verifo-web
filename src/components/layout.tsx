@@ -22,7 +22,7 @@ const MENU_ITEMS = [
     items: [
       { title: "Getting Started", href: "/users/getting-started", description: "Step-by-step onboarding guide", icon: Rocket },
       { title: "AI Capabilities", href: "/users/ai-capabilities", description: "Range of AI models and tasks", icon: CpuIcon },
-      { title: "Proof Explorer", href: "/users/proof-explorer", description: "Verify your AI task history", icon: History },
+      { title: "Network Explorer", href: "/explorer", description: "Live on-chain activity across all nodes", icon: History },
       { title: "Pricing & Credits", href: "/users/pricing", description: "Tiers, credits, and USDC payments", icon: CreditCard },
     ]
   },

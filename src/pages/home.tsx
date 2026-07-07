@@ -509,27 +509,39 @@ export function Home() {
 
       {/* ─── Final CTA ─── */}
       <section className="border-t border-border">
-        <div className="grid grid-cols-1 md:grid-cols-2 min-h-[400px]">
-          <div className="p-12 md:p-24 flex flex-col justify-center border-b md:border-b-0 md:border-r border-border bg-card">
-            <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4 text-foreground">Build the Future</h2>
-            <p className="text-lg text-muted-foreground mb-8 max-w-md">
+        <div className="grid grid-cols-1 md:grid-cols-3 min-h-[360px]">
+          <div className="p-10 md:p-16 flex flex-col justify-center border-b md:border-b-0 md:border-r border-border bg-card">
+            <h2 className="text-2xl md:text-3xl font-bold tracking-tight mb-3 text-foreground">Build the Future</h2>
+            <p className="text-base text-muted-foreground mb-7 max-w-xs">
               Start using verifiable AI models today via our web dashboard or API. No vendor lock-in.
             </p>
             <div>
-              <Button size="lg" className="h-12 px-8 shadow-md" asChild>
+              <Button size="lg" className="h-11 px-7 shadow-md" asChild>
                 <Link href="/sign-up">Start using AI today</Link>
               </Button>
             </div>
           </div>
-          
-          <div className="p-12 md:p-24 flex flex-col justify-center bg-muted/40">
-            <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4 text-foreground">Power the Network</h2>
-            <p className="text-lg text-muted-foreground mb-8 max-w-md">
+
+          <div className="p-10 md:p-16 flex flex-col justify-center border-b md:border-b-0 md:border-r border-border bg-muted/40">
+            <h2 className="text-2xl md:text-3xl font-bold tracking-tight mb-3 text-foreground">Power the Network</h2>
+            <p className="text-base text-muted-foreground mb-7 max-w-xs">
               Provide compute, verification, or storage to the network. Earn USDC directly to your Solana wallet.
             </p>
             <div>
-              <Button size="lg" variant="outline" className="h-12 px-8 bg-background" asChild>
+              <Button size="lg" variant="outline" className="h-11 px-7 bg-background" asChild>
                 <Link href="/contributors/compute">Run a node, earn rewards</Link>
+              </Button>
+            </div>
+          </div>
+
+          <div className="p-10 md:p-16 flex flex-col justify-center">
+            <h2 className="text-2xl md:text-3xl font-bold tracking-tight mb-3 text-foreground">Explore the Network</h2>
+            <p className="text-base text-muted-foreground mb-7 max-w-xs">
+              Watch real-time on-chain activity — node connections, task proofs, and USDC reward payouts across the entire network.
+            </p>
+            <div>
+              <Button size="lg" variant="outline" className="h-11 px-7 bg-background" asChild>
+                <Link href="/explorer">Open explorer</Link>
               </Button>
             </div>
           </div>

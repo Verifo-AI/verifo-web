@@ -30,6 +30,7 @@ import RewardsReputation from "@/pages/contributors/rewards-reputation";
 import ContributorRegister from "@/pages/contributors/register";
 import ContributorDashboard from "@/pages/contributors/dashboard";
 import InstallDocs from "@/pages/contributors/install-docs";
+import NetworkExplorer from "@/pages/explorer";
 import Guide from "@/pages/guide";
 
 import DeveloperApi from "@/pages/ecosystem/developer-api";
@@ -120,6 +121,8 @@ function AppRoutes() {
             <Route path="/ecosystem/roadmap" component={Roadmap} />
             <Route path="/ecosystem/governance" component={Governance} />
             <Route path="/ecosystem/about" component={About} />
+
+            <Route path="/explorer" component={NetworkExplorer} />
 
             <Route component={NotFound} />
           </Switch>
