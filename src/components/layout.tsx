@@ -264,7 +264,6 @@ export function Layout({ children, hideNavOnTop = false }: { children: React.Rea
 
               {/* Social links row — bottom of mobile menu */}
               <div className="pt-4 border-t border-border mt-1">
-                <p className="text-[11px] text-muted-foreground text-center mb-3 uppercase tracking-widest font-medium">Follow us</p>
                 <div className="flex items-center justify-center gap-3">
                   <a
                     href="https://github.com/Verifo-AI"
