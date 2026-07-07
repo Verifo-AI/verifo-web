@@ -214,7 +214,7 @@ export default function NetworkExplorer() {
 
         {/* ─── Header ─── */}
         <div className="border-b border-border bg-card">
-          <div className="max-w-6xl mx-auto px-4 py-8 md:py-10">
+          <div className="max-w-[1400px] mx-auto px-6 md:px-10 py-8 md:py-10">
             <div className="flex items-center justify-between gap-4">
               <div>
                 <div className="flex items-center gap-3 mb-1">
@@ -260,7 +260,7 @@ export default function NetworkExplorer() {
 
         {/* ─── Filters ─── */}
         <div className="border-b border-border bg-card/50 sticky top-0 z-10 backdrop-blur-sm">
-          <div className="max-w-6xl mx-auto px-4">
+          <div className="max-w-[1400px] mx-auto px-6 md:px-10">
             <div className="flex items-center gap-0 overflow-x-auto scrollbar-none">
               {TABS.map(({ key, label }) => (
                 <button
@@ -301,7 +301,7 @@ export default function NetworkExplorer() {
         </div>
 
         {/* ─── Content ─── */}
-        <div className="max-w-6xl mx-auto px-4 py-6">
+        <div className="max-w-[1400px] mx-auto px-6 md:px-10 py-6">
           {loading ? (
             <div className="space-y-2">
               {Array.from({ length: 8 }).map((_, i) => (
