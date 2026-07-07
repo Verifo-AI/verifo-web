@@ -185,34 +185,34 @@ export function Home() {
           background: "radial-gradient(ellipse 80% 60% at 50% 30%, hsl(90 52% 36% / 0.10) 0%, transparent 70%)"
         }} />
 
-        {/* Social links — hero top-left */}
-        <div className="absolute top-5 left-5 md:left-10 z-20 flex items-center gap-3">
+        {/* Social links — hero top-left, desktop only */}
+        <div className="absolute top-6 left-8 z-20 hidden md:flex items-center gap-2">
           <a
             href="https://github.com/Verifo-AI"
             target="_blank"
             rel="noreferrer"
             aria-label="GitHub"
-            className="flex items-center justify-center w-8 h-8 rounded-full bg-white/8 hover:bg-white/18 border border-white/12 hover:border-white/30 transition-all duration-200"
+            className="flex items-center justify-center w-10 h-10 rounded-xl bg-white/8 hover:bg-white/15 border border-white/14 hover:border-white/35 transition-all duration-200 backdrop-blur-sm"
           >
-            <Github className="w-4 h-4 text-white/70 hover:text-white" />
+            <Github className="w-[18px] h-[18px] text-white/65 group-hover:text-white" />
           </a>
           <a
             href="https://x.com/verifo_ai"
             target="_blank"
             rel="noreferrer"
             aria-label="X (Twitter)"
-            className="flex items-center justify-center w-8 h-8 rounded-full bg-white/8 hover:bg-white/18 border border-white/12 hover:border-white/30 transition-all duration-200"
+            className="flex items-center justify-center w-10 h-10 rounded-xl bg-white/8 hover:bg-white/15 border border-white/14 hover:border-white/35 transition-all duration-200 backdrop-blur-sm"
           >
-            <svg viewBox="0 0 24 24" className="w-3.5 h-3.5 fill-current text-white/70"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+            <svg viewBox="0 0 24 24" className="w-4 h-4 fill-current text-white/65"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
           </a>
           <a
             href="https://pump.fun"
             target="_blank"
             rel="noreferrer"
             aria-label="PumpFun"
-            className="flex items-center justify-center w-8 h-8 rounded-full bg-white/8 hover:bg-white/18 border border-white/12 hover:border-white/30 transition-all duration-200 overflow-hidden"
+            className="flex items-center justify-center w-10 h-10 rounded-xl bg-white/8 hover:bg-white/15 border border-white/14 hover:border-white/35 transition-all duration-200 backdrop-blur-sm overflow-hidden"
           >
-            <img src="/pumpfun-logo.webp" alt="PumpFun" className="w-5 h-5 object-contain" />
+            <img src="/pumpfun-logo.webp" alt="PumpFun" className="w-6 h-6 object-contain" />
           </a>
         </div>
 
