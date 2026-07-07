@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { Layout } from "@/components/layout";
-import { ExternalLink, Copy, Check, RefreshCw } from "lucide-react";
+import { ExternalLink, Copy, Check, RefreshCw, ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 type Tab = "all" | "nodes" | "tasks" | "rewards";
@@ -19,6 +19,13 @@ interface ExplorerItem {
   amount: string | null;
 }
 
+interface Pagination {
+  page: number;
+  pageSize: number;
+  total: number;
+  totalPages: number;
+}
+
 interface ExplorerStats {
   totalProofsToday: number;
   totalUsdcPaidToday: number;
@@ -28,6 +35,7 @@ interface ExplorerStats {
 interface ExplorerResponse {
   stats: ExplorerStats;
   items: ExplorerItem[];
+  pagination: Pagination;
 }
 
 const API_BASE = import.meta.env.VITE_API_URL ?? "";
@@ -50,9 +58,9 @@ const MODELS: { key: ModelFilter; label: string }[] = [
 
 const CATEGORY_CONFIG: Record<EventCategory, { label: string; dotClass: string; textClass: string }> = {
   connect: { label: "Connect", dotClass: "bg-emerald-500 dark:bg-emerald-400", textClass: "text-emerald-700 dark:text-emerald-400" },
-  offline: { label: "Offline", dotClass: "bg-red-400 dark:bg-red-400", textClass: "text-red-600 dark:text-red-400" },
-  task: { label: "Task", dotClass: "bg-sky-500 dark:bg-sky-400", textClass: "text-sky-700 dark:text-sky-400" },
-  reward: { label: "Reward", dotClass: "bg-amber-500 dark:bg-amber-400", textClass: "text-amber-700 dark:text-amber-400" },
+  offline: { label: "Offline",  dotClass: "bg-red-400",                        textClass: "text-red-600 dark:text-red-400" },
+  task:    { label: "Task",     dotClass: "bg-sky-500 dark:bg-sky-400",         textClass: "text-sky-700 dark:text-sky-400" },
+  reward:  { label: "Reward",   dotClass: "bg-amber-500 dark:bg-amber-400",     textClass: "text-amber-700 dark:text-amber-400" },
 };
 
 function shortHash(hash: string | null): string {
@@ -73,17 +81,10 @@ function relativeTime(isoStr: string): string {
 
 function CopyButton({ value }: { value: string }) {
   const [copied, setCopied] = useState(false);
-  const handleCopy = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    navigator.clipboard.writeText(value).then(() => {
-      setCopied(true);
-      setTimeout(() => setCopied(false), 1500);
-    });
-  };
   return (
     <button
-      onClick={handleCopy}
-      className="ml-1 p-0.5 rounded text-muted-foreground/50 hover:text-muted-foreground transition-colors"
+      onClick={(e) => { e.stopPropagation(); navigator.clipboard.writeText(value).then(() => { setCopied(true); setTimeout(() => setCopied(false), 1500); }); }}
+      className="p-0.5 rounded text-muted-foreground/40 hover:text-muted-foreground transition-colors"
       title="Copy full hash"
     >
       {copied ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
@@ -101,17 +102,82 @@ function CategoryBadge({ category }: { category: EventCategory }) {
   );
 }
 
+function PaginationBar({ pagination, onPage }: { pagination: Pagination; onPage: (p: number) => void }) {
+  const { page, totalPages, total, pageSize } = pagination;
+  if (totalPages <= 1) return null;
+
+  const from = (page - 1) * pageSize + 1;
+  const to = Math.min(page * pageSize, total);
+
+  // Build visible page numbers (window of 5 around current page)
+  const pages: (number | "…")[] = [];
+  const WINDOW = 2;
+  const start = Math.max(1, page - WINDOW);
+  const end = Math.min(totalPages, page + WINDOW);
+  if (start > 1) { pages.push(1); if (start > 2) pages.push("…"); }
+  for (let i = start; i <= end; i++) pages.push(i);
+  if (end < totalPages) { if (end < totalPages - 1) pages.push("…"); pages.push(totalPages); }
+
+  return (
+    <div className="flex flex-col sm:flex-row items-center justify-between gap-3 mt-4 pt-4 border-t border-border">
+      <span className="text-xs text-muted-foreground order-2 sm:order-1">
+        Showing {from}–{to} of {total} entries
+      </span>
+      <div className="flex items-center gap-1 order-1 sm:order-2">
+        <button
+          onClick={() => onPage(page - 1)}
+          disabled={page === 1}
+          className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs border border-border hover:bg-muted/50 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+        >
+          <ChevronLeft className="w-3.5 h-3.5" /> Prev
+        </button>
+
+        <div className="flex items-center gap-0.5 mx-1">
+          {pages.map((p, i) =>
+            p === "…" ? (
+              <span key={`ellipsis-${i}`} className="px-1.5 text-xs text-muted-foreground">…</span>
+            ) : (
+              <button
+                key={p}
+                onClick={() => onPage(p as number)}
+                className={cn(
+                  "w-7 h-7 rounded-lg text-xs font-medium transition-colors",
+                  p === page
+                    ? "bg-foreground text-background"
+                    : "hover:bg-muted/60 text-muted-foreground hover:text-foreground"
+                )}
+              >
+                {p}
+              </button>
+            )
+          )}
+        </div>
+
+        <button
+          onClick={() => onPage(page + 1)}
+          disabled={page === totalPages}
+          className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs border border-border hover:bg-muted/50 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+        >
+          Next <ChevronRight className="w-3.5 h-3.5" />
+        </button>
+      </div>
+    </div>
+  );
+}
+
 export default function NetworkExplorer() {
   const [tab, setTab] = useState<Tab>("all");
   const [model, setModel] = useState<ModelFilter>("all");
+  const [page, setPage] = useState(1);
   const [data, setData] = useState<ExplorerResponse | null>(null);
   const [loading, setLoading] = useState(true);
   const [lastRefresh, setLastRefresh] = useState<Date>(new Date());
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
-  const fetchData = useCallback(async (activeTab: Tab, activeModel: ModelFilter) => {
+  const fetchData = useCallback(async (activeTab: Tab, activeModel: ModelFilter, activePage: number, silent = false) => {
+    if (!silent) setLoading(true);
     try {
-      const params = new URLSearchParams({ tab: activeTab, model: activeModel, limit: "50" });
+      const params = new URLSearchParams({ tab: activeTab, model: activeModel, page: String(activePage) });
       const res = await fetch(`${API_BASE}/api/public/explorer?${params}`);
       if (!res.ok) throw new Error("fetch failed");
       const json: ExplorerResponse = await res.json();
@@ -125,15 +191,21 @@ export default function NetworkExplorer() {
   }, []);
 
   useEffect(() => {
-    setLoading(true);
-    fetchData(tab, model);
+    fetchData(tab, model, page);
     if (intervalRef.current) clearInterval(intervalRef.current);
-    intervalRef.current = setInterval(() => fetchData(tab, model), 15_000);
+    // Only auto-refresh on page 1 (newest), so user isn't disrupted while browsing older pages
+    if (page === 1) {
+      intervalRef.current = setInterval(() => fetchData(tab, model, 1, true), 15_000);
+    }
     return () => { if (intervalRef.current) clearInterval(intervalRef.current); };
-  }, [tab, model, fetchData]);
+  }, [tab, model, page, fetchData]);
+
+  const handleTabChange = (t: Tab) => { setTab(t); setPage(1); };
+  const handleModelChange = (m: ModelFilter) => { setModel(m); setPage(1); };
 
   const stats = data?.stats;
   const items = data?.items ?? [];
+  const pagination = data?.pagination ?? { page: 1, pageSize: 15, total: 0, totalPages: 1 };
   const showModelFilter = tab !== "nodes";
 
   return (
@@ -159,7 +231,7 @@ export default function NetworkExplorer() {
                 </p>
               </div>
               <button
-                onClick={() => fetchData(tab, model)}
+                onClick={() => fetchData(tab, model, page)}
                 className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors px-3 py-1.5 rounded-lg border border-border hover:bg-muted/40"
               >
                 <RefreshCw className="w-3.5 h-3.5" />
@@ -167,26 +239,19 @@ export default function NetworkExplorer() {
               </button>
             </div>
 
-            {/* Stats strip */}
             {stats && (
               <div className="mt-6 grid grid-cols-3 gap-4">
-                <div className="flex flex-col">
-                  <span className="text-xl md:text-2xl font-semibold tabular-nums text-foreground">
-                    {stats.totalVerifiedNodes}
-                  </span>
-                  <span className="text-xs text-muted-foreground mt-0.5">Verified nodes</span>
+                <div>
+                  <span className="text-xl md:text-2xl font-semibold tabular-nums text-foreground">{stats.totalVerifiedNodes}</span>
+                  <p className="text-xs text-muted-foreground mt-0.5">Verified nodes</p>
                 </div>
-                <div className="flex flex-col">
-                  <span className="text-xl md:text-2xl font-semibold tabular-nums text-foreground">
-                    {stats.totalProofsToday}
-                  </span>
-                  <span className="text-xs text-muted-foreground mt-0.5">Proofs today</span>
+                <div>
+                  <span className="text-xl md:text-2xl font-semibold tabular-nums text-foreground">{stats.totalProofsToday}</span>
+                  <p className="text-xs text-muted-foreground mt-0.5">Proofs today</p>
                 </div>
-                <div className="flex flex-col">
-                  <span className="text-xl md:text-2xl font-semibold tabular-nums text-foreground">
-                    ${stats.totalUsdcPaidToday.toFixed(2)}
-                  </span>
-                  <span className="text-xs text-muted-foreground mt-0.5">USDC paid today</span>
+                <div>
+                  <span className="text-xl md:text-2xl font-semibold tabular-nums text-foreground">${stats.totalUsdcPaidToday.toFixed(2)}</span>
+                  <p className="text-xs text-muted-foreground mt-0.5">USDC paid today</p>
                 </div>
               </div>
             )}
@@ -196,12 +261,11 @@ export default function NetworkExplorer() {
         {/* ─── Filters ─── */}
         <div className="border-b border-border bg-card/50 sticky top-0 z-10 backdrop-blur-sm">
           <div className="max-w-6xl mx-auto px-4">
-            {/* Tabs */}
             <div className="flex items-center gap-0 overflow-x-auto scrollbar-none">
               {TABS.map(({ key, label }) => (
                 <button
                   key={key}
-                  onClick={() => setTab(key)}
+                  onClick={() => handleTabChange(key)}
                   className={cn(
                     "px-4 py-3 text-sm font-medium border-b-2 transition-colors whitespace-nowrap",
                     tab === key
@@ -214,19 +278,18 @@ export default function NetworkExplorer() {
               ))}
             </div>
 
-            {/* Model chips */}
             {showModelFilter && (
               <div className="flex items-center gap-1.5 pb-3 overflow-x-auto scrollbar-none">
                 <span className="text-xs text-muted-foreground shrink-0 mr-1">Model:</span>
                 {MODELS.map(({ key, label }) => (
                   <button
                     key={key}
-                    onClick={() => setModel(key)}
+                    onClick={() => handleModelChange(key)}
                     className={cn(
                       "px-2.5 py-1 rounded-full text-xs font-medium transition-colors whitespace-nowrap border",
                       model === key
                         ? "bg-foreground text-background border-foreground"
-                        : "border-border text-muted-foreground hover:text-foreground hover:border-foreground/40 bg-transparent"
+                        : "border-border text-muted-foreground hover:text-foreground hover:border-foreground/40"
                     )}
                   >
                     {label}
@@ -240,7 +303,7 @@ export default function NetworkExplorer() {
         {/* ─── Content ─── */}
         <div className="max-w-6xl mx-auto px-4 py-6">
           {loading ? (
-            <div className="space-y-3">
+            <div className="space-y-2">
               {Array.from({ length: 8 }).map((_, i) => (
                 <div key={i} className="h-14 rounded-xl bg-muted/40 animate-pulse" />
               ))}
@@ -258,9 +321,9 @@ export default function NetworkExplorer() {
                   <thead>
                     <tr className="border-b border-border bg-muted/30">
                       <th className="text-left px-4 py-3 text-xs font-medium text-muted-foreground uppercase tracking-wide w-24">Type</th>
-                      <th className="text-left px-4 py-3 text-xs font-medium text-muted-foreground uppercase tracking-wide w-36">Node</th>
+                      <th className="text-left px-4 py-3 text-xs font-medium text-muted-foreground uppercase tracking-wide w-40">Node</th>
                       <th className="text-left px-4 py-3 text-xs font-medium text-muted-foreground uppercase tracking-wide">TX Hash</th>
-                      <th className="text-left px-4 py-3 text-xs font-medium text-muted-foreground uppercase tracking-wide w-24">Details</th>
+                      <th className="text-left px-4 py-3 text-xs font-medium text-muted-foreground uppercase tracking-wide w-28">Details</th>
                       <th className="text-right px-4 py-3 text-xs font-medium text-muted-foreground uppercase tracking-wide w-24">Time</th>
                     </tr>
                   </thead>
@@ -273,27 +336,16 @@ export default function NetworkExplorer() {
                           i % 2 === 0 ? "bg-background" : "bg-card/30"
                         )}
                       >
-                        <td className="px-4 py-3">
-                          <CategoryBadge category={item.category} />
-                        </td>
-                        <td className="px-4 py-3 text-xs text-muted-foreground font-mono">
-                          {item.nodeLabel}
-                        </td>
+                        <td className="px-4 py-3"><CategoryBadge category={item.category} /></td>
+                        <td className="px-4 py-3 text-xs text-muted-foreground font-mono">{item.nodeLabel}</td>
                         <td className="px-4 py-3">
                           {item.txHash ? (
                             <div className="flex items-center gap-1">
-                              <span className="font-mono text-xs text-foreground/80">
-                                {shortHash(item.txHash)}
-                              </span>
+                              <span className="font-mono text-xs text-foreground/80">{shortHash(item.txHash)}</span>
                               <CopyButton value={item.txHash} />
                               {item.explorerUrl && (
-                                <a
-                                  href={item.explorerUrl}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="ml-0.5 text-muted-foreground/50 hover:text-primary transition-colors"
-                                  title="View on Solana Explorer"
-                                >
+                                <a href={item.explorerUrl} target="_blank" rel="noopener noreferrer"
+                                  className="text-muted-foreground/40 hover:text-primary transition-colors" title="View on Solana Explorer">
                                   <ExternalLink className="w-3 h-3" />
                                 </a>
                               )}
@@ -305,9 +357,7 @@ export default function NetworkExplorer() {
                         <td className="px-4 py-3 text-xs text-muted-foreground">
                           {item.amount
                             ? <span className="font-medium text-amber-700 dark:text-amber-400">{item.amount} USDC</span>
-                            : item.taskType
-                              ? <span>{item.taskType}</span>
-                              : <span className="text-muted-foreground/40">—</span>}
+                            : item.taskType ?? <span className="text-muted-foreground/30">—</span>}
                         </td>
                         <td className="px-4 py-3 text-xs text-muted-foreground text-right tabular-nums">
                           {relativeTime(item.timestamp)}
@@ -321,32 +371,19 @@ export default function NetworkExplorer() {
               {/* Mobile cards */}
               <div className="md:hidden space-y-2">
                 {items.map((item) => (
-                  <div
-                    key={item.id}
-                    className="rounded-xl border border-border bg-card p-4"
-                  >
+                  <div key={item.id} className="rounded-xl border border-border bg-card p-4">
                     <div className="flex items-center justify-between mb-2">
                       <CategoryBadge category={item.category} />
-                      <span className="text-xs text-muted-foreground tabular-nums">
-                        {relativeTime(item.timestamp)}
-                      </span>
+                      <span className="text-xs text-muted-foreground tabular-nums">{relativeTime(item.timestamp)}</span>
                     </div>
-                    <div className="text-xs text-muted-foreground font-mono mb-2">
-                      {item.nodeLabel}
-                    </div>
+                    <div className="text-xs text-muted-foreground font-mono mb-2">{item.nodeLabel}</div>
                     {item.txHash ? (
                       <div className="flex items-center gap-2">
-                        <span className="font-mono text-xs text-foreground/80 flex-1 truncate">
-                          {shortHash(item.txHash)}
-                        </span>
+                        <span className="font-mono text-xs text-foreground/80 flex-1 truncate">{shortHash(item.txHash)}</span>
                         <CopyButton value={item.txHash} />
                         {item.explorerUrl && (
-                          <a
-                            href={item.explorerUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-muted-foreground/60 hover:text-primary transition-colors"
-                          >
+                          <a href={item.explorerUrl} target="_blank" rel="noopener noreferrer"
+                            className="text-muted-foreground/50 hover:text-primary transition-colors">
                             <ExternalLink className="w-3.5 h-3.5" />
                           </a>
                         )}
@@ -365,8 +402,11 @@ export default function NetworkExplorer() {
                 ))}
               </div>
 
-              <p className="text-xs text-muted-foreground/50 text-center mt-6">
-                Last updated {relativeTime(lastRefresh.toISOString())} · Auto-refreshes every 15s
+              {/* Pagination */}
+              <PaginationBar pagination={pagination} onPage={(p) => setPage(p)} />
+
+              <p className="text-xs text-muted-foreground/40 text-center mt-4">
+                {page === 1 ? `Auto-refreshes every 15s · last updated ${relativeTime(lastRefresh.toISOString())}` : `Viewing page ${page} · auto-refresh paused`}
               </p>
             </>
           )}
