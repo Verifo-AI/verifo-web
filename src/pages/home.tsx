@@ -192,25 +192,25 @@ export function Home() {
             target="_blank"
             rel="noreferrer"
             aria-label="GitHub"
-            className="flex items-center justify-center w-10 h-10 rounded-xl bg-white/8 hover:bg-white/15 border border-white/14 hover:border-white/35 transition-all duration-200 backdrop-blur-sm"
+            className="flex items-center justify-center w-10 h-10 rounded-xl bg-foreground/8 hover:bg-foreground/14 border border-foreground/12 hover:border-foreground/28 transition-all duration-200 backdrop-blur-sm"
           >
-            <Github className="w-[18px] h-[18px] text-white/65 group-hover:text-white" />
+            <Github className="w-[18px] h-[18px] text-foreground/60 hover:text-foreground/90" />
           </a>
           <a
             href="https://x.com/verifo_ai"
             target="_blank"
             rel="noreferrer"
             aria-label="X (Twitter)"
-            className="flex items-center justify-center w-10 h-10 rounded-xl bg-white/8 hover:bg-white/15 border border-white/14 hover:border-white/35 transition-all duration-200 backdrop-blur-sm"
+            className="flex items-center justify-center w-10 h-10 rounded-xl bg-foreground/8 hover:bg-foreground/14 border border-foreground/12 hover:border-foreground/28 transition-all duration-200 backdrop-blur-sm"
           >
-            <svg viewBox="0 0 24 24" className="w-4 h-4 fill-current text-white/65"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+            <svg viewBox="0 0 24 24" className="w-4 h-4 fill-current text-foreground/60"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
           </a>
           <a
             href="https://pump.fun"
             target="_blank"
             rel="noreferrer"
             aria-label="PumpFun"
-            className="flex items-center justify-center w-10 h-10 rounded-xl bg-white/8 hover:bg-white/15 border border-white/14 hover:border-white/35 transition-all duration-200 backdrop-blur-sm overflow-hidden"
+            className="flex items-center justify-center w-10 h-10 rounded-xl bg-foreground/8 hover:bg-foreground/14 border border-foreground/12 hover:border-foreground/28 transition-all duration-200 backdrop-blur-sm overflow-hidden"
           >
             <img src="/pumpfun-logo.webp" alt="PumpFun" className="w-6 h-6 object-contain" />
           </a>
